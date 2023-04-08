@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { fetchPrice } from './Api';
 import { countdown } from './Countdown';
+import { ProgressBar } from './ProgressBar';
+import './App.css';
 
 const delay = window.location.hash ? 4 : 30;
 const { format } = Intl.NumberFormat('en-US', { // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/NumberFormat
@@ -24,6 +26,9 @@ export function App() {
         </select>
       </div>
       <div>{typeof result === 'string' ? result : `${cryptoId} is currently worth ${format(result)}.`}</div>
+      <div>
+        <ProgressBar currentValue={ttnu} maximumValue={delay} />
+      </div>
       <div>Time to next update:  {ttnu} second{ttnu === 1 ? '' : 's'}</div>
     </div>
   );
