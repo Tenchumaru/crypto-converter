@@ -9,21 +9,32 @@ const { format } = Intl.NumberFormat('en-US', { // https://developer.mozilla.org
 });
 
 export function App() {
+  const [cryptoId, setCryptoId] = useState('ETH');
   const [result, setResult] = useState<number | string>('Loading...');
   const [ttnu, setTtnu] = useState(delay);
-  useEffect(() => countdown({ expirationTime: delay, onTick: updateTtnu, onExpiration: updateConversion, autoReset: true }), []);
-  useEffect(() => { updateConversion(); }, []); // https://react.dev/reference/react/useEffect#my-effect-runs-twice-when-the-component-mounts
+  useEffect(() => countdown({ expirationTime: delay, onTick: updateTtnu, onExpiration: updateConversion, autoReset: true }), [cryptoId]);
+  useEffect(() => { updateConversion(); }, [cryptoId]); // https://react.dev/reference/react/useEffect#my-effect-runs-twice-when-the-component-mounts
 
   return (
     <div className="App">
-      <div>{typeof result === 'string' ? result : `ETH is currently worth ${format(result)}.`}</div>
+      <div>
+        <select value={cryptoId} onChange={handleCryptoIdChange}>
+          <option value="BTC">BTC</option>
+          <option value="ETH">ETH</option>
+        </select>
+      </div>
+      <div>{typeof result === 'string' ? result : `${cryptoId} is currently worth ${format(result)}.`}</div>
       <div>Time to next update:  {ttnu} second{ttnu === 1 ? '' : 's'}</div>
     </div>
   );
 
+  function handleCryptoIdChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    setCryptoId(event.target.value);
+  }
+
   async function updateConversion() {
     setTtnu(delay);
-    setResult(await fetchPrice());
+    setResult(await fetchPrice(cryptoId));
   }
 
   function updateTtnu() {
