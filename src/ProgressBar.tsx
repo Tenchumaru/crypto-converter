@@ -1,12 +1,12 @@
 export interface Props {
   currentValue: number;
   maximumValue: number;
+  tickInterval: number;
 }
 
-export function ProgressBar(props: Props) {
-  const { currentValue, maximumValue } = props;
+export function ProgressBar({ currentValue, maximumValue, tickInterval }: Props) {
   const strokeDasharray = `${100 - 100 * currentValue / maximumValue}px, 100px`;
-  const transitionDuration = currentValue === maximumValue ? '0s' : '1s';
+  const transitionDuration = currentValue === maximumValue ? '0s' : `${tickInterval}s`;
 
   return (
     <svg className="progress-bar" viewBox="0 0 100 2">

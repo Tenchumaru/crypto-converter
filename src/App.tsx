@@ -9,12 +9,13 @@ const { format } = Intl.NumberFormat('en-US', { // https://developer.mozilla.org
   currency: 'USD',
   style: 'currency',
 });
+const tickInterval = 1 / 16;
 
 export function App() {
   const [cryptoId, setCryptoId] = useState('ETH');
   const [result, setResult] = useState<number | string>('Loading...');
   const [ttnu, setTtnu] = useState(delay);
-  useEffect(() => countdown({ expirationTime: delay, onTick: updateTtnu, onExpiration: updateConversion, autoReset: true }), [cryptoId]);
+  useEffect(() => countdown({ autoReset: true, expirationTime: delay, tickInterval, onExpiration: updateConversion, onTick: updateTtnu }), [cryptoId]);
   useEffect(() => { updateConversion(); }, [cryptoId]); // https://react.dev/reference/react/useEffect#my-effect-runs-twice-when-the-component-mounts
 
   return (
@@ -27,9 +28,9 @@ export function App() {
       </div>
       <div>{typeof result === 'string' ? result : `${cryptoId} is currently worth ${format(result)}.`}</div>
       <div>
-        <ProgressBar currentValue={ttnu} maximumValue={delay} />
+        <ProgressBar currentValue={ttnu} tickInterval={tickInterval} maximumValue={delay} />
       </div>
-      <div>Time to next update:  {ttnu} second{ttnu === 1 ? '' : 's'}</div>
+      <div>Time to next update:  {Math.ceil(ttnu)} second{ttnu <= 1 ? '' : 's'}</div>
     </div>
   );
 
@@ -43,6 +44,6 @@ export function App() {
   }
 
   function updateTtnu() {
-    setTtnu(ttnu => ttnu - 1);
+    setTtnu(ttnu => ttnu - tickInterval);
   }
 }

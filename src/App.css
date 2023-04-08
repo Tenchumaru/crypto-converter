@@ -15,4 +15,5 @@
 .progress-bar__progress {
   stroke: green;
   transition-property: stroke-dasharray;
+  transition-timing-function: linear;
 }
