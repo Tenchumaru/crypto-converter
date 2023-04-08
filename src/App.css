@@ -1,3 +1,9 @@
+.App {
+  margin: 11px auto;
+  text-align: center;
+  width: 333px;
+}
+
 .progress-bar {
   stroke-linecap: round;
 }
