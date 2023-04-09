@@ -31,6 +31,9 @@ export function App() {
         <ProgressBar currentValue={ttnu} tickInterval={tickInterval} maximumValue={delay} />
       </div>
       <div>Time to next update:  {Math.ceil(ttnu)} second{ttnu <= 1 ? '' : 's'}</div>
+      <div>
+        <button>Buy {cryptoId}</button>
+      </div>
     </div>
   );
 
