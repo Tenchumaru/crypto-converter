@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fetchPrice } from './Api';
 import { countdown } from './Countdown';
 import { ProgressBar } from './ProgressBar';
@@ -32,13 +32,25 @@ export function App() {
       </div>
       <div>Time to next update:  {Math.ceil(ttnu)} second{ttnu <= 1 ? '' : 's'}</div>
       <div>
-        <button>Buy {cryptoId}</button>
+        <button style={{ position: 'relative' }} onMouseEnter={handleButtonMouseEnter}>Buy {cryptoId}</button>
       </div>
     </div>
   );
 
   function handleCryptoIdChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setCryptoId(event.target.value);
+  }
+
+  function handleButtonMouseEnter(event: React.MouseEvent<HTMLButtonElement>) {
+    const { offsetLeft, offsetWidth, style: { left } } = event.currentTarget;
+    const bodyOffsetWidth = document.body.offsetWidth;
+    if (bodyOffsetWidth > 2 * offsetWidth) {
+      const currentLeft = left ? Number(left.split('p')[0]) : 0;
+      const goingLeft = Math.random() < 0.5 ? offsetLeft - offsetWidth > 0 : bodyOffsetWidth - offsetLeft < 2 * offsetWidth;
+      const targetOffsetLeft = goingLeft ? Math.random() * (offsetLeft - offsetWidth) : Math.random() * (bodyOffsetWidth - 2 * offsetWidth - offsetLeft) + offsetLeft + offsetWidth;
+
+      event.currentTarget.style.left = `${currentLeft + targetOffsetLeft - offsetLeft}px`;
+    }
   }
 
   async function updateConversion() {
