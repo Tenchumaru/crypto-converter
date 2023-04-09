@@ -32,13 +32,21 @@ export function App() {
       </div>
       <div>Time to next update:  {Math.ceil(ttnu)} second{ttnu <= 1 ? '' : 's'}</div>
       <div>
-        <button style={{ position: 'relative' }} onMouseEnter={handleButtonMouseEnter}>Buy {cryptoId}</button>
+        <button style={{ position: 'relative' }} onClick={handleButtonClick} onMouseEnter={handleButtonMouseEnter}>Buy {cryptoId}</button>
       </div>
     </div>
   );
 
   function handleCryptoIdChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setCryptoId(event.target.value);
+  }
+
+  function handleButtonClick() {
+    const dollar = document.createElement('div');
+    dollar.addEventListener('animationend', handleDollarAnimationEnd);
+    dollar.appendChild(document.createTextNode('$'));
+    dollar.classList.add('dollar');
+    document.body.appendChild(dollar);
   }
 
   function handleButtonMouseEnter(event: React.MouseEvent<HTMLButtonElement>) {
@@ -51,6 +59,11 @@ export function App() {
 
       event.currentTarget.style.left = `${currentLeft + targetOffsetLeft - offsetLeft}px`;
     }
+  }
+
+  function handleDollarAnimationEnd(event: AnimationEvent) {
+    const node = event.target as ChildNode;
+    node.remove();
   }
 
   async function updateConversion() {

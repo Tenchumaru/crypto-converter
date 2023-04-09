@@ -4,6 +4,15 @@
   width: 333px;
 }
 
+.dollar {
+  animation: 4s linear 0s 1 rotate-dollar;
+  color: green;
+  overflow: hidden;
+  position: absolute;
+  top: 388px;
+  width: fit-content;
+}
+
 .progress-bar {
   stroke-linecap: round;
 }
@@ -16,4 +25,14 @@
   stroke: green;
   transition-property: stroke-dasharray;
   transition-timing-function: linear;
+}
+
+@keyframes rotate-dollar {
+  from {
+    transform: translate(-300px, 6px) scale(66) rotate(0);
+  }
+
+  to {
+    transform: translate(1888px, 6px) scale(66) rotate(2turn);
+  }
 }
