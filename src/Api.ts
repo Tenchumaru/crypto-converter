@@ -21,8 +21,11 @@ const providers: Provider[] = [
 
 export async function fetchPrice(cryptoId: string): Promise<number | string> {
   if (window.location.hash) {
+    // Return a random number when debugging.
     return Math.random();
   }
+
+  // Invoke all providers and use the result of the first one that doesn't fail.  Use the result of the last one if they all fail.
   const promises = providers.map((p) => invokeProvider(p, cryptoId));
   for (; ;) {
     const winner = Promise.race(promises);
@@ -35,6 +38,7 @@ export async function fetchPrice(cryptoId: string): Promise<number | string> {
 }
 
 async function invokeProvider(provider: Provider, cryptoId: string): Promise<number | string> {
+  // Invoke the provider and return is success or failure result.
   const { extractPrice, fetchKeys, urlFormat } = provider;
   const url = urlFormat.replace('$fetchKey', fetchKeys && fetchKeys[cryptoId] || cryptoId);
   try {

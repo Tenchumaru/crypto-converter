@@ -5,6 +5,7 @@ export interface Props {
 }
 
 export function ProgressBar({ currentValue, maximumValue, tickInterval }: Props) {
+  // Render a progress bar at currentValue relative to maximumValue.  Animate at tickInterval to provide a smooth experience.
   const strokeDasharray = `${100 - 100 * currentValue / maximumValue}px, 100px`;
   const transitionDuration = currentValue === maximumValue ? '0s' : `${tickInterval}s`;
 
