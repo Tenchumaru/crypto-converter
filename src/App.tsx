@@ -15,6 +15,8 @@ export function App() {
   const [cryptoId, setCryptoId] = useState('ETH');
   const [result, setResult] = useState<number | string>('Loading...');
   const [ttnu, setTtnu] = useState(delay);
+  const resultText = typeof result === 'string' ? result : `${cryptoId} is currently worth ${format(result)}.`;
+  const timeText = `${Math.ceil(ttnu)} second${ttnu <= 1 ? '' : 's'}`;
   useEffect(() => countdown({ autoReset: true, expirationTime: delay, tickInterval, onExpiration: updateConversion, onTick: updateTtnu }), [cryptoId]);
   useEffect(() => { updateConversion(); }, [cryptoId]); // https://react.dev/reference/react/useEffect#my-effect-runs-twice-when-the-component-mounts
 
@@ -26,11 +28,11 @@ export function App() {
           <option value="ETH">ETH</option>
         </select>
       </div>
-      <div>{typeof result === 'string' ? result : `${cryptoId} is currently worth ${format(result)}.`}</div>
+      <div>{resultText}</div>
       <div>
         <ProgressBar currentValue={ttnu} tickInterval={tickInterval} maximumValue={delay} />
       </div>
-      <div>Time to next update:  {Math.ceil(ttnu)} second{ttnu <= 1 ? '' : 's'}</div>
+      <div>Time to next update:  {timeText}</div>
       <div>
         <button style={{ position: 'relative' }} onClick={handleButtonClick} onMouseEnter={handleButtonMouseEnter}>Buy {cryptoId}</button>
       </div>
