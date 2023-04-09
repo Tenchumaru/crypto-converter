@@ -27,6 +27,22 @@
   transition-timing-function: linear;
 }
 
+.pulse {
+  animation-name: pulse;
+  animation-duration: 1.0s;
+  border-radius: 3px;
+}
+
+@keyframes pulse {
+  from {
+    background-color: green;
+  }
+
+  to {
+    background-color: transparent;
+  }
+}
+
 @keyframes rotate-dollar {
   from {
     transform: translate(-300px, 6px) scale(66) rotate(0);

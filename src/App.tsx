@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { fetchPrice } from './Api';
 import { countdown } from './Countdown';
 import { ProgressBar } from './ProgressBar';
@@ -12,6 +12,7 @@ const { format } = Intl.NumberFormat('en-US', { // https://developer.mozilla.org
 const tickInterval = 1 / 16;
 
 export function App() {
+  const pulseRef = useRef<HTMLDivElement>(null);
   const [cryptoId, setCryptoId] = useState('ETH');
   const [result, setResult] = useState<number | string>('Loading...');
   const [ttnu, setTtnu] = useState(delay);
@@ -28,7 +29,7 @@ export function App() {
           <option value="ETH">ETH</option>
         </select>
       </div>
-      <div>{resultText}</div>
+      <div className="pulse" ref={pulseRef} onAnimationEnd={handlePulseAnimationEnd}>{resultText}</div>
       <div>
         <ProgressBar currentValue={ttnu} tickInterval={tickInterval} maximumValue={delay} />
       </div>
@@ -68,7 +69,12 @@ export function App() {
     node.remove();
   }
 
+  function handlePulseAnimationEnd() {
+    pulseRef.current!.style.animation = 'none';
+  }
+
   async function updateConversion() {
+    pulseRef.current!.style.animation = '';
     setTtnu(delay);
     setResult(await fetchPrice(cryptoId));
   }
